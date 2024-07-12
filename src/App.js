@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+// src/App.js
+import React, { useState } from 'react';
 import './App.css';
+import Header from './components/Header';
+import SearchForm from './components/SearchForm';
+import FlightList from './components/FlightList';
+import FlightChart from './components/FlightChart';
 
-function App() {
+const App = () => {
+  const [flights, setFlights] = useState([]);
+
+  const handleSearch = (from, to) => {
+    const sampleFlights = [
+      { from: 'Bangalore', to: 'Goa', price: 100 },
+      { from: 'Bangalore', to: 'Delhi', price: 150 },
+      { from: 'Mumbai', to: 'Goa', price: 90 },
+    ];
+
+    const filteredFlights = sampleFlights.filter(flight => 
+      flight.from.toLowerCase() === from.toLowerCase() && flight.to.toLowerCase() === to.toLowerCase()
+    );
+
+    setFlights(filteredFlights);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <SearchForm onSearch={handleSearch} />
+      <FlightList flights={flights} />
+      {flights.length > 0 && <FlightChart flights={flights} />}
     </div>
   );
-}
+};
 
 export default App;
